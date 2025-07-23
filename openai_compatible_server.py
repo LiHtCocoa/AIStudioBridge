@@ -231,7 +231,7 @@ def stream_and_update_state(task_id: str, request_base: dict, user_or_tool_messa
             try:
                 # findall直接返回捕获组的内容
                 text = json.loads(f'"{match_group}"')
-                if text and not text.startswith("**"):
+                if text and (len(text.strip()) > 2 or not text.startswith("**")):
                     full_ai_response_text += text
                     yield format_openai_chunk(text, model, request_id)
             except json.JSONDecodeError:
@@ -270,7 +270,7 @@ def generate_non_streaming_response(task_id: str, request_base: dict, user_or_to
             try:
                 # findall直接返回捕获组的内容
                 text = json.loads(f'"{match_group}"')
-                if text and not text.startswith("**"):
+                if text and (len(text.strip()) > 2 or not text.startswith("**")):
                     full_ai_response_text += text
             except json.JSONDecodeError:
                 continue
